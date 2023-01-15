@@ -20,7 +20,7 @@ spec:
       - name: nodeserver
         image: ponnu2014/dockerbuild:latest
         ports:
-        - containerPort: 8081
+        - containerPort: 8082
         
         
 ---
@@ -35,6 +35,6 @@ spec:
   type: LoadBalancer
   ports:
   - protocol: TCP
-    port: 5000
+    port: 8081
     targetPort: 8081
-    nodePort: 31110
+   
