@@ -1,0 +1,66 @@
+pipeline{
+    agent any
+   
+    stages{
+
+          stage('checkout source'){
+            steps{
+                git 'https://github.com/9500073161/nodejsCICD.git'
+            }
+        }
+        
+          stage('docker image building'){
+
+                steps{
+
+                    script{
+                        
+                        dir('nodeweb') {
+    // some block
+
+                        sh 'docker image build -t $JOB_NAME:v1.$BUILD_ID .'
+                        sh 'docker image tag $JOB_NAME:v1.$BUILD_ID ponnu2014/$JOB_NAME:v1.$BUILD_ID'
+                        sh 'docker image tag $JOB_NAME:v1.$BUILD_ID ponnu2014/$JOB_NAME:latest'
+                    }
+                }
+            }
+         
+      
+          }   
+
+         stage('Push Image to DockerHub'){
+
+                steps{
+
+                    script{
+
+                        withCredentials([string(credentialsId: 'dockerHub_passwd', variable: 'dockerHub_passwd')]) {
+                            
+                            sh 'docker login -u ponnu2014 -p ${dockerHub_passwd}'
+                            sh 'docker image push ponnu2014/$JOB_NAME:v1.$BUILD_ID'
+                            sh 'docker image push ponnu2014/$JOB_NAME:latest'
+                      }
+                    }
+                }
+            }
+        stage('Connect with Cluster'){
+
+        steps{
+
+            script{
+                 withCredentials([[
+                    $class: 'AmazonWebServicesCredentialsBinding',
+                    credentialsId: "awsjenkins",
+                    accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                    secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+                
+                aws eks --region us-east-1 update-kubeconfig --name nodejs-eks-NzeqDvJE
+                }
+
+                
+            }
+        }
+    } 
+     
+   }
+}
