@@ -83,7 +83,7 @@ pipeline{
                 aws configure set aws_access_key_id "$ACCESS_KEY"
                 aws configure set aws_secret_access_key "$SECRET_KEY"
                 aws configure set region "us-east-1"                                                   
-                aws eks --region us-east-1 update-kubeconfig --name nodejs-eks-cluster
+                aws eks --region us-east-1 update-kubeconfig --name nodejs-eks-cluster-1
                 """
                 
                 
