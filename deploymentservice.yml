@@ -18,9 +18,9 @@ spec:
     spec:
       containers:
       - name: nodeserver
-        image: ponnu2014/nodeapp:latest
+        image: ponnu2014/dockerbuild:latest
         ports:
-        - containerPort: 3000
+        - containerPort: 8081
         
         
 ---
@@ -36,5 +36,5 @@ spec:
   ports:
   - protocol: TCP
     port: 5000
-    targetPort: 3000
+    targetPort: 8081
     nodePort: 31110
