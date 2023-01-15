@@ -20,7 +20,7 @@ spec:
       - name: nodeserver
         image: ponnu2014/dockerbuild:latest
         ports:
-        - containerPort: 8082
+        - containerPort: 8081
         
         
 ---
